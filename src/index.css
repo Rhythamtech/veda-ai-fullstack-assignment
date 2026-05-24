@@ -1,0 +1,216 @@
+/* Import Google Fonts for figma pixel-perfect matching */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* Color Tokens - VedaAI Design System */
+  --brand-grad-start: #F59E0B;
+  --brand-grad-end: #7C2D12;
+  --brand-accent: #FF6B35;
+  --brand-dark: #111111;
+  
+  /* Light Theme Variables (Default) */
+  --bg-base: #F4F4F5;
+  --bg-figma-grad: linear-gradient(180deg, #EEEEEE 0%, #DADADA 100%);
+  --surf-primary: #FFFFFF;
+  --surf-secondary: #F8F8F8;
+  --border-default: #E4E4E7;
+  
+  --text-primary: #303030;
+  --text-secondary: #5E5E5E;
+  --text-muted: #A9A9A9;
+  --text-inverse: #FFFFFF;
+  
+  /* Status Colors */
+  --status-success: #22C55E;
+  --status-warning: #F59E0B;
+  --status-error: #EF4444;
+  --status-info: #3B82F6;
+  
+  /* Radius Tokens */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-pill: 9999px;
+  
+  /* Elevation Shadows */
+  --shadow-sm: 0px 2px 6px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0px 8px 20px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0px 16px 40px rgba(0, 0, 0, 0.12);
+  --shadow-glow: 0px 0px 0px 3px rgba(255, 107, 53, 0.15);
+  
+  /* Transition Preset */
+  --transition-standard: all 200ms ease-out;
+  
+  /* Typography Variables */
+  --font-primary: 'Bricolage Grotesque', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Bricolage Grotesque', 'Inter', system-ui, -apple-system, sans-serif;
+  
+  /* Layout Dimensions */
+  --sidebar-w-desktop: 304px;
+  --sidebar-w-tablet: 88px;
+}
+
+/* Dark Theme Variables (Triggered via .dark class on <html>) */
+html.dark {
+  --bg-base: #09090B;
+  --bg-figma-grad: #09090B;
+  --surf-primary: #18181B;
+  --surf-secondary: #27272A;
+  --border-default: #27272A;
+  
+  --text-primary: #F4F4F5;
+  --text-secondary: #A1A1AA;
+  --text-muted: #71717A;
+  --text-inverse: #09090B;
+  
+  --shadow-sm: 0px 2px 6px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0px 8px 20px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0px 16px 40px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0px 0px 0px 3px rgba(255, 107, 53, 0.25);
+}
+
+/* Document Resets */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.dropzone:hover, .dropzone:focus-within {
+  border-color: var(--brand-accent);
+  background-color: var(--surf-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.dropzone.drag-active {
+  border-color: var(--brand-accent);
+  background-color: rgba(255, 107, 53, 0.05);
+  box-shadow: var(--shadow-glow);
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  background: var(--bg-figma-grad);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 200ms ease-out, color 200ms ease-out;
+  overflow-x: hidden;
+}
+
+/* Typography Scales with CSS clamp() */
+h1 {
+  font-family: var(--font-primary);
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+}
+
+h2 {
+  font-family: var(--font-primary);
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+}
+
+h3 {
+  font-family: var(--font-primary);
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+p, span, label, select, input, textarea {
+  font-family: var(--font-sans);
+  font-size: clamp(14px, 1.2vw, 16px);
+}
+
+.body-lg {
+  font-family: var(--font-sans);
+  font-size: clamp(16px, 1.5vw, 18px);
+}
+
+.body-sm {
+  font-family: var(--font-sans);
+  font-size: clamp(12px, 1vw, 14px);
+  color: var(--text-secondary);
+}
+
+/* Responsive Containers */
+.container {
+  width: 100%;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1440px;
+  }
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-base);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border-radius: var(--radius-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Global Print Overrides */
+@media print {
+  html, body {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

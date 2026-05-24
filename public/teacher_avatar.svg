@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Background Circle (Amber/Yellow) -->
+  <circle cx="50" cy="50" r="50" fill="#FBBF24" />
+  
+  <!-- Back Hair Bun (Brown) -->
+  <circle cx="50" cy="24" r="14" fill="#4B3621" />
+  
+  <!-- Neck -->
+  <rect x="44" y="62" width="12" height="15" fill="#FDBA74" />
+  <!-- Neck Shadow -->
+  <path d="M44,62 L56,62 L56,66 L44,66 Z" fill="#E28C5C" opacity="0.3" />
+
+  <!-- Clothes: Inner White Collared Shirt -->
+  <path d="M35,76 L65,76 L60,100 L40,100 Z" fill="#FFFFFF" />
+  
+  <!-- Sweater Vest (Cream) -->
+  <path d="M32,78 C32,78 40,78 40,84 C40,84 45,78 50,78 C55,78 60,84 60,84 C60,84 68,78 68,78 L72,100 L28,100 Z" fill="#EEDC82" />
+  <!-- Collar details -->
+  <path d="M42,76 L50,86 L40,76 Z" fill="#E0F2FE" />
+  <path d="M58,76 L50,86 L60,76 Z" fill="#E0F2FE" />
+  <path d="M50,86 L50,100" stroke="#CBD5E1" stroke-width="1.5" />
+
+  <!-- Face (Skin Tone) -->
+  <circle cx="50" cy="48" r="18" fill="#FED7AA" />
+
+  <!-- Hair (Bangs & Sides) -->
+  <path d="M32,45 C32,32 68,32 68,45 C68,48 65,40 60,35 C55,32 45,32 40,35 C35,40 32,48 32,45 Z" fill="#4B3621" />
+  <path d="M32,40 Q50,28 68,40" stroke="#3D2B1F" stroke-width="3" fill="none" />
+
+  <!-- Ears -->
+  <circle cx="31" cy="48" r="3.5" fill="#FED7AA" />
+  <circle cx="69" cy="48" r="3.5" fill="#FED7AA" />
+
+  <!-- Eyes -->
+  <circle cx="43" cy="46" r="2" fill="#1F2937" />
+  <circle cx="57" cy="46" r="2" fill="#1F2937" />
+  <circle cx="44" cy="45" r="0.75" fill="#FFFFFF" />
+  <circle cx="58" cy="45" r="0.75" fill="#FFFFFF" />
+
+  <!-- Eyebrows -->
+  <path d="M39,41 C41,40 44,41 46,42" stroke="#3D2B1F" stroke-width="1.5" stroke-linecap="round" fill="none" />
+  <path d="M61,41 C59,40 56,41 54,42" stroke="#3D2B1F" stroke-width="1.5" stroke-linecap="round" fill="none" />
+
+  <!-- Glasses (Black round-ish frames) -->
+  <circle cx="43" cy="47" r="7" stroke="#1F2937" stroke-width="1.5" fill="none" />
+  <circle cx="57" cy="47" r="7" stroke="#1F2937" stroke-width="1.5" fill="none" />
+  <path d="M50,47 L50,47" stroke="#1F2937" stroke-width="1.5" /> <!-- Bridge -->
+  <path d="M36,47 L32,47" stroke="#1F2937" stroke-width="1.5" /> <!-- Side left -->
+  <path d="M64,47 L68,47" stroke="#1F2937" stroke-width="1.5" /> <!-- Side right -->
+
+  <!-- Nose -->
+  <path d="M50,49 Q51,53 50,54" stroke="#E28C5C" stroke-width="1.5" stroke-linecap="round" fill="none" />
+
+  <!-- Smile -->
+  <path d="M45,56 Q50,60 55,56" stroke="#BE123C" stroke-width="1.5" stroke-linecap="round" fill="none" />
+</svg>
