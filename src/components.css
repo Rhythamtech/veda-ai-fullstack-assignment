@@ -1,23 +1,26 @@
-/* VedaAI Custom Components Stylesheet */
 
-/* --- APP LAYOUT --- */
 .app-layout {
   display: flex;
   height: 100vh;
   width: 100%;
-  max-width: 1560px;
-  margin: 0 auto;
-  padding: 12px;
-  gap: 12px;
+  margin: 0;
+  padding: 0;
+  gap: 0;
   position: relative;
   box-sizing: border-box;
   overflow: hidden;
 }
 
+@media (min-width: 1024px) {
+  .app-layout {
+    padding: 0;
+  }
+}
+
 @media (max-width: 1023px) {
   .app-layout {
     display: block;
-    padding: 12px;
+    padding: 0;
   }
 }
 
@@ -30,6 +33,8 @@
   overflow-y: auto;
   height: 100%;
   padding-right: 4px;
+  margin: 0;
+  background-color: var(--bg-base);
 }
 
 /* Main Content Desktop */
@@ -38,7 +43,7 @@
     padding-left: 0;
   }
   .main-container {
-    max-width: 1200px;
+    max-width: none;
   }
 }
 
@@ -47,6 +52,7 @@
   padding: 16px 16px 80px;
   max-width: 100%;
   box-sizing: border-box;
+  margin: 0;
 }
 
 @media (min-width: 640px) {
@@ -63,7 +69,7 @@
 
 @media (min-width: 1024px) {
   .content-area {
-    padding: 8px 0 80px 0;
+    padding: 24px 32px 80px 32px;
   }
 }
 
@@ -77,14 +83,14 @@
   flex-direction: column;
   z-index: 100;
   transition: width 200ms ease-out, transform 200ms ease-out;
-  border: 1px solid rgba(0, 0, 0, 0.04);
-  border-radius: 16px;
-  box-shadow: 0px 16px 48px rgba(0, 0, 0, 0.12), 0px 32px 48px rgba(0, 0, 0, 0.2);
+  border: none;
+  border-right: 1px solid var(--border-default);
+  border-radius: 0;
   box-sizing: border-box;
   flex-shrink: 0;
 }
 html.dark .sidebar {
-  border: 1px solid var(--border-default);
+  border-right: 1px solid var(--border-default);
 }
 
 .sidebar-header {
@@ -334,41 +340,45 @@ html.dark .school-city {
 /* --- HEADER COMPONENT --- */
 .header {
   position: sticky;
-  top: 12px;
-  margin: 0 auto 12px auto;
+  top: 0;
+  margin: 0;
   width: 100%;
-  max-width: 1100px;
+  max-width: 100%;
   height: 56px;
-  background-color: rgba(255, 255, 255, 0.75);
+  background-color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border-default);
-  border-radius: 16px;
-  box-shadow: var(--shadow-sm);
+  border: none;
+  border-bottom: 1px solid var(--border-default);
+  border-radius: 0;
+  box-shadow: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 12px 0 24px;
+  padding: 0 24px;
   z-index: 90;
   transition: var(--transition-standard);
   box-sizing: border-box;
 }
 
 html.dark .header {
-  background-color: rgba(24, 24, 27, 0.75);
-  border: 1px solid var(--border-default);
+  background-color: rgba(24, 24, 27, 0.8);
+  border: none;
+  border-bottom: 1px solid var(--border-default);
 }
 
 @media (max-width: 1023px) {
   .app-layout .main-container {
-    padding-left: 0 !important;
+    padding: 0 !important;
   }
   .header {
-    top: 12px;
-    margin: 0 0 12px 0;
-    padding: 0 12px 0 16px;
+    top: 0;
+    margin: 0;
+    padding: 0 16px;
     height: 56px;
-    border-radius: 16px;
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid var(--border-default);
   }
 }
 
@@ -1656,8 +1666,8 @@ html.dark .a4-paper {
 /* --- AssignmentsList Component --- */
 .assignments-stage-container {
   width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   padding-bottom: 32px;
 }
 
@@ -1833,36 +1843,37 @@ html.dark .a4-paper {
 
 @media (min-width: 640px) {
   .assignments-grid {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
   }
 }
 
 @media (min-width: 1024px) {
   .assignments-grid {
-    gap: 24px;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
   }
 }
 
 .assignment-card {
   background-color: var(--surf-primary);
   border: 1px solid var(--border-default);
-  border-radius: 24px;
-  padding: 24px;
+  border-radius: 20px;
+  padding: 20px;
   box-shadow: var(--shadow-sm);
   cursor: pointer;
   transition: var(--transition-standard);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 162px;
+  min-height: 130px;
   position: relative;
 }
 
 @media (min-width: 768px) {
   .assignment-card {
-    padding: 24px;
-    min-height: 160px;
+    padding: 20px 24px;
+    min-height: 140px;
   }
 }
 
@@ -1880,13 +1891,13 @@ html.dark .a4-paper {
 }
 
 .assignment-card h4 {
-  font-family: var(--font-primary);
-  font-weight: 800;
-  font-size: 24px;
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+  font-size: clamp(18px, 1.6vw, 22px);
   color: #303030;
   margin: 0;
   line-height: 120%;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.02em;
 }
 
 .three-dot-btn {
@@ -1960,22 +1971,23 @@ html.dark .a4-paper {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-top: 40px;
-  gap: 16px;
+  margin-top: 24px;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .date-item {
-  font-family: var(--font-primary);
-  font-size: 16px;
-  font-weight: 800;
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: clamp(12px, 1vw, 14px);
+  font-weight: 600;
   color: #303030;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.01em;
   white-space: nowrap;
 }
 
 .date-item strong {
   color: #303030;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 /* Floating Action Button */
@@ -1985,6 +1997,12 @@ html.dark .a4-paper {
   left: 50%;
   transform: translateX(-50%);
   z-index: 80;
+}
+
+@media (min-width: 1024px) {
+  .floating-action-container {
+    left: calc(50% + var(--sidebar-w-desktop) / 2 + 6px);
+  }
 }
 
 .floating-action-btn {
@@ -2017,8 +2035,8 @@ html.dark .floating-action-btn {
 /* --- AssessmentForm Component --- */
 .form-stage-container {
   width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
 }
 
 .form-card-container {
@@ -2376,8 +2394,8 @@ html.dark .stepper-step.active .stepper-number {
 
 .output-stage-wrapper {
   width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -2487,10 +2505,11 @@ html.dark .banner-btn.secondary-toggle {
   overflow-x: auto;
   padding: 0 0 24px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .a4-sheet-canvas {
+  margin: 0 auto;
   background-color: #FFFFFF;
   color: #111111;
   width: 100%;
@@ -3372,6 +3391,35 @@ html.dark .input-label {
   width: 100%;
 }
 
+/* Custom Text Input Styles matching Date Input */
+.custom-text-input {
+  width: 100%;
+  height: 44px;
+  border-radius: 100px;
+  border: 1.25px solid #DADADA;
+  background-color: #FFFFFF;
+  padding: 0 20px;
+  color: #303030;
+  font-family: var(--font-primary);
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: -0.04em;
+  outline: none;
+  transition: var(--transition-standard);
+  box-sizing: border-box;
+}
+
+html.dark .custom-text-input {
+  background-color: var(--surf-primary);
+  border-color: var(--border-default);
+  color: var(--text-primary);
+}
+
+.custom-text-input:focus {
+  border-color: var(--brand-accent);
+  box-shadow: var(--shadow-glow);
+}
+
 .custom-date-input {
   width: 100%;
   height: 44px;
@@ -3406,7 +3454,9 @@ html.dark .input-label {
 }
 
 html.dark .custom-date-input {
+  background-color: var(--surf-primary);
   border-color: var(--border-default);
+  color: var(--text-primary);
 }
 
 .custom-date-input:focus {
@@ -3488,6 +3538,42 @@ html.dark .custom-date-input {
     grid-template-columns: 1fr 40px 120px 120px;
     gap: 16px;
     padding: 10px 12px;
+  }
+}
+
+@media (max-width: 639px) {
+  .template-headers {
+    display: none !important;
+  }
+  
+  .template-row {
+    grid-template-columns: 1fr auto !important;
+    gap: 12px !important;
+    padding: 12px !important;
+  }
+  
+  .template-row .select-wrapper-custom {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+  }
+  
+  .template-row .delete-row-btn {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    margin: 0 !important;
+  }
+  
+  /* Stack No. of Questions and Marks side-by-side in row 2 */
+  .template-row .row-counter-block:nth-child(3) {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    max-width: 100% !important;
+  }
+  
+  .template-row .row-counter-block:nth-child(4) {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+    max-width: 120px !important;
   }
 }
 
@@ -3991,19 +4077,28 @@ html.dark .form-next-btn:hover:not(:disabled) {
   height: 24px;
 }
 
-/* ── Bottom navigation bar (fixed, portrait only) ─────────────────────────── */
 .mobile-bottom-nav {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  margin: 0 auto;
+  max-width: 450px;
   height: 64px;
-  background-color: var(--surf-primary);
-  border-top: 1px solid var(--border-default);
+  background-color: #141416;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.15);
   display: flex;
-  align-items: stretch;
+  align-items: center;
   z-index: 85;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding: 0 12px;
+}
+
+html.dark .mobile-bottom-nav {
+  background-color: #0E0E10;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 /* Only show bottom nav in portrait; hide in landscape */
@@ -4020,30 +4115,33 @@ html.landscape-mode .mobile-bottom-nav {
   gap: 3px;
   background: none;
   border: none;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.45);
   font-size: 10px;
   font-weight: 500;
-  font-family: var(--font-primary);
+  font-family: var(--font-sans);
   cursor: pointer;
   transition: var(--transition-standard);
   padding: 6px 4px;
+  height: 48px;
+  border-radius: 12px;
 }
 
 .mobile-bottom-tab:hover {
-  color: var(--text-secondary);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .mobile-bottom-tab.active {
-  color: var(--text-primary);
-  font-weight: 700;
+  color: #FFFFFF !important;
+  font-weight: 600;
 }
 
 .mobile-bottom-tab.active svg {
-  color: var(--text-primary);
+  color: #FFFFFF !important;
 }
 
 html.dark .mobile-bottom-tab.active {
-  color: var(--text-primary);
+  color: #FFFFFF !important;
 }
 
 /* ── Landscape: ensure desktop header is visible and mobile header is hidden ─── */

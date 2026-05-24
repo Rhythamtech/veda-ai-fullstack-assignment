@@ -9,14 +9,14 @@ import { useAssessmentStore } from './store/useAssessmentStore'
 import { LayoutGrid, FileText, BookOpen, Sparkles } from 'lucide-react'
 import './components.css'
 
-// Hook: returns true when device is in portrait orientation
+// Hook: returns true when device viewport is under 1024px
 function useIsPortrait() {
   const [isPortrait, setIsPortrait] = useState(
-    () => window.matchMedia('(orientation: portrait)').matches
+    () => window.matchMedia('(max-width: 1023px)').matches
   )
 
   useEffect(() => {
-    const mq = window.matchMedia('(orientation: portrait)')
+    const mq = window.matchMedia('(max-width: 1023px)')
     const handler = (e) => setIsPortrait(e.matches)
     mq.addEventListener('change', handler)
     return () => mq.removeEventListener('change', handler)
