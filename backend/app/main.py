@@ -50,6 +50,10 @@ app.add_middleware(
 
 @app.get("/")
 def health():
+    from fastapi.responses import FileResponse
+    index_path = os.path.join("dist", "index.html")
+    if os.path.exists(index_path):
+        return FileResponse(index_path)
     return {"status": "ok", "service": "VedaAI Backend"}
 
 
