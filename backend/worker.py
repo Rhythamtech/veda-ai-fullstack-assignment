@@ -14,6 +14,8 @@ from rq import Worker, Queue
 from dotenv import load_dotenv
 
 load_dotenv()
+# Load parent root-level .env if it exists
+load_dotenv(dotenv_path=os.path.abspath(os.path.join(os.path.dirname(__file__), "../.env")))
 
 redis_conn = Redis.from_url(os.getenv("REDIS_URL", "redis://localhost:6379"))
 queue = Queue("default", connection=redis_conn)

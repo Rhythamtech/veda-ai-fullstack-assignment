@@ -1,0 +1,25 @@
+# Node modules & local build files
+node_modules/
+dist/
+.npm/
+npm-debug.log
+
+# Python virtual environment & caches
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.uv-cache/
+
+# Version control & IDEs
+.git/
+.gitignore
+.vscode/
+.idea/
+.DS_Store
+
+# Local configuration files
+backend/.env
+backend/.env.local
+backend/dist/

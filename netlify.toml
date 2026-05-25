@@ -1,0 +1,19 @@
+# netlify.toml
+# Netlify Configuration for VedaAI Frontend
+
+[build]
+  # Build command for Vite React frontend (ran from monorepo root)
+  command = "npm run build"
+  
+  # Directory where Vite generates the production build
+  publish = "dist"
+
+[build.environment]
+  # Node version compatibility
+  NODE_VERSION = "18"
+
+# Redirect rules to handle Single Page Application (SPA) routing gracefully
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

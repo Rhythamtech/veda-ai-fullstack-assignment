@@ -23,6 +23,9 @@ from app.cache import get_job_state
 from app.database import get_all_assignments
 
 load_dotenv()
+# Load parent root-level .env if it exists
+import os
+load_dotenv(dotenv_path=os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.env")))
 
 # ── Redis + RQ Setup ──────────────────────────────────────────────────────────
 
@@ -106,3 +109,31 @@ async def list_assignments():
     """Return all saved assessments from MongoDB."""
     assignments = await get_all_assignments()
     return {"assignments": assignments}
+
+
+# ── Serve Built React Frontend (SPA Support) ──────────────────────────────────
+import os
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
+if os.path.exists("dist"):
+    # Serve built assets (JS, CSS, etc.)
+    if os.path.exists("dist/assets"):
+        app.mount("/assets", StaticFiles(directory="dist/assets"), name="assets")
+
+    # Serve other static files in dist root or fallback to index.html for SPA routing
+    @app.get("/{catchall:path}")
+    async def serve_spa(catchall: str):
+        # Ignore API and WebSocket paths so FastAPI routes catch them
+        if catchall.startswith("api") or catchall.startswith("ws"):
+            from fastapi import HTTPException
+            raise HTTPException(status_code=404, detail="Not Found")
+        
+        file_path = os.path.join("dist", catchall)
+        if os.path.isfile(file_path):
+            return FileResponse(file_path)
+            
+        index_path = os.path.join("dist", "index.html")
+        if os.path.exists(index_path):
+            return FileResponse(index_path)
+

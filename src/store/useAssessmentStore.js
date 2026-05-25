@@ -1,5 +1,9 @@
 import { create } from 'zustand'
 
+const isDev = import.meta.env.DEV;
+const API_BASE_URL = import.meta.env.VITE_API_URL || (isDev ? 'http://localhost:8000' : window.location.origin);
+const WS_BASE_URL = import.meta.env.VITE_WS_URL || (isDev ? 'ws://localhost:8000' : `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}`);
+
 export const useAssessmentStore = create((set, get) => ({
   // --- Form & Configuration State ---
   assignmentTitle: 'Chemistry Midterm Assessment',
@@ -218,7 +222,7 @@ export const useAssessmentStore = create((set, get) => ({
     // Try connecting to real FastAPI backend
     try {
       // 1. POST to /api/generate to enqueue RQ job
-      const response = await fetch('http://localhost:8000/api/generate', {
+      const response = await fetch(`${API_BASE_URL}/api/generate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -233,7 +237,7 @@ export const useAssessmentStore = create((set, get) => ({
       const { job_id } = await response.json();
       
       // 2. Connect to WebSocket stream
-      const ws = new WebSocket(`ws://localhost:8000/ws/${job_id}`);
+      const ws = new WebSocket(`${WS_BASE_URL}/ws/${job_id}`);
       set({ socket: ws });
 
       // Connection timeout: after 1.5s, if connection is still connecting, fallback to simulator
