@@ -186,7 +186,7 @@ export const useAssessmentStore = create((set, get) => ({
   },
 
   // --- WebSocket Generation Controller ---
-  startGeneration: () => {
+  startGeneration: async () => {
     if (!get().validateForm()) {
       // Trigger error notification
       get().addNotification('Validation Failed', 'Please review the form errors before generating.', 'error');
@@ -205,26 +205,41 @@ export const useAssessmentStore = create((set, get) => ({
       title: get().assignmentTitle,
       dueDate: get().dueDate,
       instructions: get().additionalInstructions,
-      questionTypes: get().questionTypes,
+      questionTypes: get().questionTypes.map(q => ({
+        type: q.type,
+        count: Number(q.count),
+        marks: Number(q.marks)
+      })),
       difficulty: get().difficulty,
       cognitiveLevels: get().cognitiveLevels,
-      syllabusTopics: get().syllabusTopics.filter(t => t.active).map(t => t.name),
-      file: get().uploadedFile ? {
-        name: get().uploadedFile.name,
-        size: get().uploadedFile.size,
-        type: get().uploadedFile.type
-      } : null
+      syllabusTopics: get().syllabusTopics.filter(t => t.active).map(t => t.name)
     };
 
-    // Try connecting to real WebSocket server
+    // Try connecting to real FastAPI backend
     try {
-      const ws = new WebSocket('ws://localhost:8080');
+      // 1. POST to /api/generate to enqueue RQ job
+      const response = await fetch('http://localhost:8000/api/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error('API server returned an error: ' + response.statusText);
+      }
+
+      const { job_id } = await response.json();
+      
+      // 2. Connect to WebSocket stream
+      const ws = new WebSocket(`ws://localhost:8000/ws/${job_id}`);
       set({ socket: ws });
 
-      // Connection timeout: after 1.5s, if connection is still connecting, fallback to internal high-fidelity mock stream
+      // Connection timeout: after 1.5s, if connection is still connecting, fallback to simulator
       const timeoutId = setTimeout(() => {
         if (ws.readyState !== WebSocket.OPEN) {
-          console.warn('Real WS server offline, falling back to rich local streaming simulation.');
+          console.warn('Real WS server connection timed out, falling back to simulation.');
           ws.close();
           get().runFallbackSimulator(payload);
         }
@@ -233,9 +248,8 @@ export const useAssessmentStore = create((set, get) => ({
       ws.onopen = () => {
         clearTimeout(timeoutId);
         set({
-          progressLogs: [...get().progressLogs, 'Connected to live WebSocket server.', 'Streaming assessment parameter settings...']
+          progressLogs: [...get().progressLogs, 'Connected to live generation server.', 'Waiting for worker process...']
         });
-        ws.send(JSON.stringify({ action: 'generate-assessment', data: payload }));
       };
 
       ws.onmessage = (event) => {
@@ -264,13 +278,13 @@ export const useAssessmentStore = create((set, get) => ({
             screenStage: 'assignment_output'
           });
           get().addNotification('Assessment Created', `"${data.paper.title}" is ready for review.`, 'success');
-        } else if (data.type === 'error') {
+        } else if (data.type === 'error' || data.step === 'failed') {
           set({
             isGenerating: false,
             generationStep: 'error',
-            progressLogs: [...get().progressLogs, `Server Error: ${data.message}`]
+            progressLogs: [...get().progressLogs, `Server Error: ${data.message || 'Job failed'}`]
           });
-          get().addNotification('Generation Error', data.message, 'error');
+          get().addNotification('Generation Error', data.message || 'Job failed', 'error');
         }
       };
 
@@ -278,7 +292,6 @@ export const useAssessmentStore = create((set, get) => ({
         console.error('WebSocket connection error:', err);
         clearTimeout(timeoutId);
         if (get().generationStep === 'connecting') {
-          // If we errored out during connection, fall back
           get().runFallbackSimulator(payload);
         }
       };
@@ -288,7 +301,7 @@ export const useAssessmentStore = create((set, get) => ({
       };
 
     } catch (e) {
-      console.error(e);
+      console.warn('Real backend offline/failed. Falling back to local simulation.', e);
       get().runFallbackSimulator(payload);
     }
   },

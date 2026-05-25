@@ -116,6 +116,18 @@ export default function AssessmentForm() {
 
         {/* Form elements */}
         <div className="details-body">
+          {/* Assignment Title */}
+          <div className="form-group" style={{ marginBottom: '24px' }}>
+            <label className="input-label" style={{ marginBottom: '6px', display: 'block' }}>Assignment Title</label>
+            <input 
+              type="text" 
+              className="custom-text-input" 
+              placeholder="e.g. Chemistry Midterm Assessment" 
+              value={assignmentTitle}
+              onChange={(e) => setAssignmentTitle(e.target.value)}
+            />
+          </div>
+
           {/* Upload Dropzone */}
           <div className="dropzone-section">
             <div 

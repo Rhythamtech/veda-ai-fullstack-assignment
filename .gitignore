@@ -22,3 +22,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# Added by code-review-graph
+.code-review-graph/
+
+# Python / UV / Environment files
+.env
+.env.*
+.venv/
+__pycache__/
+*.pyc
+.uv-cache/
+.pytest_cache/
