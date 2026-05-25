@@ -52,9 +52,14 @@ You need to run two separate processes in the `backend/` directory:
 
 ### 1. Start the Background Job Worker
 The RQ worker processes question generation tasks in the background so that long LLM response delays do not block the HTTP server.
-```bash
-python worker.py
-```
+
+> [!IMPORTANT]
+> **macOS Fork Safety Note**: 
+> On macOS, you must disable the Objective-C fork safety check to prevent RQ from crashing during job execution. Set the `OBJC_DISABLE_INITIALIZE_FORK_SAFETY` environment variable before running the worker:
+> ```bash
+> export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+> python worker.py
+> ```
 
 ### 2. Start the FastAPI API Server
 The API server receives requests, enqueues background tasks, lists saved assessments, and streams live progress logs to the frontend via WebSocket.

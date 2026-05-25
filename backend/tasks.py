@@ -22,40 +22,53 @@ def generate_assessment_task(job_id: str, payload: dict) -> None:
     Background job enqueued by POST /api/generate.
     Progress is written to Redis; the WebSocket reads and streams it.
     """
+    try:
+        # Step 1 — Analyze
+        set_job_state(job_id, {
+            "type": "progress",
+            "step": "analyzing",
+            "progress": 20,
+            "message": "Analyzing syllabus and building prompt...",
+        })
 
-    # Step 1 — Analyze
-    set_job_state(job_id, {
-        "type": "progress",
-        "step": "analyzing",
-        "progress": 20,
-        "message": "Analyzing syllabus and building prompt...",
-    })
+        # Step 2 — Generate (OpenAI call)
+        set_job_state(job_id, {
+            "type": "progress",
+            "step": "generating",
+            "progress": 60,
+            "message": "AI is generating questions...",
+        })
 
-    # Step 2 — Generate (OpenAI call)
-    set_job_state(job_id, {
-        "type": "progress",
-        "step": "generating",
-        "progress": 60,
-        "message": "AI is generating questions...",
-    })
+        paper = generate_assessment(payload)  # ← actual LLM call
 
-    paper = generate_assessment(payload)  # ← actual LLM call
+        # Step 3 — Save to MongoDB
+        set_job_state(job_id, {
+            "type": "progress",
+            "step": "saving",
+            "progress": 85,
+            "message": "Saving assessment to database...",
+        })
 
-    # Step 3 — Save to MongoDB
-    set_job_state(job_id, {
-        "type": "progress",
-        "step": "saving",
-        "progress": 85,
-        "message": "Saving assessment to database...",
-    })
+        asyncio.run(save_assignment(paper))
+        paper.pop("_id", None)  # Remove MongoDB ObjectId to prevent JSON serialization error
 
-    asyncio.run(save_assignment(paper))
+        # Step 4 — Done: write full paper to Redis for WebSocket to pick up
+        set_job_state(job_id, {
+            "type": "complete",
+            "step": "complete",
+            "progress": 100,
+            "message": "Assessment ready!",
+            "paper": paper,
+        })
+    except Exception as e:
+        import traceback
+        error_msg = f"Generation failed: {str(e)}"
+        print(f"❌ Error in generate_assessment_task for job {job_id}: {error_msg}")
+        traceback.print_exc()
+        set_job_state(job_id, {
+            "type": "error",
+            "step": "failed",
+            "progress": 0,
+            "message": error_msg,
+        })
 
-    # Step 4 — Done: write full paper to Redis for WebSocket to pick up
-    set_job_state(job_id, {
-        "type": "complete",
-        "step": "complete",
-        "progress": 100,
-        "message": "Assessment ready!",
-        "paper": paper,
-    })

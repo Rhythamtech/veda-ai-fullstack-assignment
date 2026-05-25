@@ -18,9 +18,9 @@ load_dotenv()
 
 _client = OpenAI(
     base_url=os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1"),
-    api_key=os.getenv("OPENAI_API_KEY"),
-    model = os.getenv("OPENAI_MODEL", "gpt-4o-mini"))
+    api_key=os.getenv("OPENAI_API_KEY"))
 
+_model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
 # ── Step 1: Build Prompt ──────────────────────────────────────────────────────
 
@@ -115,6 +115,7 @@ def _parse_response(raw_json: str) -> dict:
     data = json.loads(raw_json)
 
     q_number = 1
+    questions_list = []
     for section in data.get("sections", []):
         for q in section.get("questions", []):
             q["id"] = f"q-{uuid.uuid4().hex[:8]}"
@@ -123,15 +124,26 @@ def _parse_response(raw_json: str) -> dict:
             q.setdefault("correctOption", None)
             q.setdefault("difficulty", "medium")
             q.setdefault("rubric", "Award marks for correct and complete answer.")
+            
+            # Map LLM generated type names to frontend expectations
+            q_type = q.get("type", "")
+            if "Multiple Choice" in q_type or q_type == "MCQ":
+                q["type"] = "Multiple Choice"
+            elif "Short" in q_type:
+                q["type"] = "Short Answer"
+            elif "Long" in q_type:
+                q["type"] = "Long Answer"
+            
+            questions_list.append(q)
             q_number += 1
 
     # Recalculate totalMarks from actual questions
     total = sum(
         q["marks"]
-        for section in data.get("sections", [])
-        for q in section.get("questions", [])
+        for q in questions_list
     )
     data["totalMarks"] = total
+    data["questions"] = questions_list
 
     return data
 

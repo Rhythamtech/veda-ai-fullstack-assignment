@@ -50,10 +50,15 @@ REDIS_URL=redis://localhost:6379
 
 #### C. Start the RQ Worker (Terminal 1):
 The background worker processes question generation tasks sequentially so long LLM delays never block your API server.
-```bash
-cd backend
-python worker.py
-```
+
+> [!IMPORTANT]
+> **macOS Fork Safety Note**: 
+> On macOS, you must disable the Objective-C fork safety check to prevent RQ from crashing during job execution. Set the `OBJC_DISABLE_INITIALIZE_FORK_SAFETY` environment variable before running the worker:
+> ```bash
+> cd backend
+> export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+> python worker.py
+> ```
 
 #### D. Start the FastAPI API Server (Terminal 2):
 Streams live task state updates over WebSocket and registers REST endpoints.
