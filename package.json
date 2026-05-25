@@ -5,7 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:all": "concurrently --names \"VITE,API,WRK\" -c \"green,blue,yellow\" \"npm run dev\" \"npm run backend:api\" \"npm run backend:worker\"",
     "server": "node server.js",
+    "backend": "concurrently --names \"API,WRK\" -c \"blue,yellow\" \"npm run backend:api\" \"npm run backend:worker\"",
+    "backend:api": "cd backend && uvicorn app.main:app --reload --port 8000",
+    "backend:worker": "cd backend && OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES python worker.py",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -22,6 +26,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
+    "concurrently": "^8.2.2",
     "eslint": "^10.3.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",

@@ -49,11 +49,13 @@ COPY --from=frontend-builder /app/dist ./dist
 # Copy backend Python code
 COPY backend/app ./app
 COPY backend/tasks.py backend/worker.py ./
+COPY entrypoint.sh ./
+
+# Make entrypoint script executable
+RUN chmod +x entrypoint.sh
 
 # Expose port 8000 for the FastAPI web server
 EXPOSE 8000
 
-# Default command: Runs the FastAPI web server
-# NOTE: To run this same container as the background RQ Worker, override the 
-# start command in your cloud platform to: "python worker.py"
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Default command: Runs both the FastAPI server and the RQ worker via the entrypoint script
+CMD ["./entrypoint.sh"]

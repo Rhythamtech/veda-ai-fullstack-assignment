@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  # 🌐 FastAPI Web Server
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o-mini}
+      - MONGO_URL=mongodb://host.docker.internal:27017
+      - REDIS_URL=redis://host.docker.internal:6379
+    # Allows containers to connect to localhost/ports of the host machine (macOS)
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: always
+
+  # 📦 Background RQ Worker
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Override the default FastAPI start command to run the RQ worker
+    command: python worker.py
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o-mini}
+      - MONGO_URL=mongodb://host.docker.internal:27017
+      - REDIS_URL=redis://host.docker.internal:6379
+      - OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: always
+
+# NOTE: If your separate Redis and MongoDB containers are running on a specific
+# Docker network (e.g., "my-app-network"), uncomment the block below to join it:
+#
+# networks:
+#   default:
+#     external: true
+#     name: my-app-network
